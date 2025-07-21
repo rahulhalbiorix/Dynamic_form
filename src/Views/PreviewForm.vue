@@ -1,4 +1,5 @@
 <template>
+  <main  style="overflow-y: auto; max-height: 100vh;">
   <v-container class="pa-4" style="max-height: 750px; overflow-y: auto">
     <v-card
       class="pa-6 rounded-xl"
@@ -163,6 +164,7 @@
 
     </v-card>
   </v-container>
+  </main>
 </template>
 
 <script lang="ts" setup>

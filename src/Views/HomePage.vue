@@ -1,5 +1,5 @@
 <template>
-  <main class="d-flex fill-height">
+  <main class="d-flex fill-height"  style="overflow-y: auto; max-height: 100vh;">
     <v-container  fluid  class="pa-6 ma-0"  >
         
       <v-row dense>
