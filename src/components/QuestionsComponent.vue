@@ -9,6 +9,8 @@
         class="mr-1 text-center pa-2"
         style="border: 2px solid white"
       >
+
+      <v-form ref="formRef" v-model="isFormValid">
         <v-row>
           <!-- column for question text field -->
           <v-col cols="12" md="4">
@@ -105,6 +107,7 @@
             </v-card>
           </v-col>
         </v-row>
+      </v-form>
 
         <v-card-actions class="justify-center">
           <v-btn
@@ -236,6 +239,12 @@ import { computed, reactive, ref, watch } from "vue";
 import { required } from "@vuelidate/validators";
 import { useDynamicFormDataStore } from "@/stores/store";
 import { router } from "@/Router/router";
+import { nextTick } from "vue";
+
+const formRef = ref();
+const isFormValid = ref(true);
+
+
 
 const form = reactive({
   question: "",
@@ -366,6 +375,11 @@ function resetForm() {
   form.options = [];
   isEditing.value = false;
   currentEditIndex.value = null;
+
+ nextTick(() => {
+    formRef.value?.resetValidation();
+  });
+
 }
 
 

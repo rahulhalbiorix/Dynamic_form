@@ -125,8 +125,42 @@
           >
             Submit
           </v-btn>
+          <v-btn
+           color="warning"
+            size="large"
+            class="text-white font-weight-bold px-6 py-3 ml-2"
+              prepend-icon="mdi-eye-circle-outline"
+            elevation="2"
+            @click="previewData"
+          >
+            Preview 
+          </v-btn>
         </v-row>
       </v-form>
+      <!-- Preview Section -->
+<div v-if="previewMode" class="mt-8">
+  <h2 class="text-h6 font-weight-bold mb-4">Form Data Preview</h2>
+  <v-card
+    class="pa-4"
+    style="background-color: #f1f8e9; border-left: 5px solid #c5e1a5"
+  >
+    <v-list dense>
+      <v-list-item
+        v-for="(item, index) in previewItems"
+        :key="index"
+        class="py-2"
+      >
+        <v-list-item-content>
+          <v-list-item-title class="font-weight-bold">{{
+            item.label
+          }}</v-list-item-title>
+          <v-list-item-subtitle>{{ item.value }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </v-card>
+</div>
+
     </v-card>
   </v-container>
 </template>
@@ -147,6 +181,10 @@ const store = useDynamicFormDataStore();
 const form = ref();
 
 const formData = reactive<{ [key: number]: any }>({});
+
+const previewMode = ref(false);
+const previewItems = ref<{ label: string; value: any }[]>([]);
+
 
 const fieldRules = reactive({});
 onMounted(() => {
@@ -202,13 +240,33 @@ async function submitForm() {
 
   const result =await formRef.value?.validate();
 
-  
-
   if (result?.valid) {
     alert("Form submitted successfully!");
   } else {
     alert("Validation failed ❌");
   }
 }
+
+
+function previewData() {
+  previewItems.value = [];
+
+  form.value?.questionList.forEach((question: any, index: number) => {
+    const value = formData[index];
+
+    let formattedValue = value;
+    if (Array.isArray(value)) {
+      formattedValue = value.join(", ");
+    }
+
+    previewItems.value.push({
+      label: `${index + 1}. ${question.question}`,
+      value: formattedValue || "—",
+    });
+  });
+
+  previewMode.value = true;
+}
+
 
 </script>
